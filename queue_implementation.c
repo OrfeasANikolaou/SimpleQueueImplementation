@@ -11,7 +11,12 @@ int64_t get_select(void);
 int64_t get_val(void);
 int64_t q_head = 0;
 int64_t q_tail = 0;
-
+enum {ENQUEUE =				1, 
+			DEQUEUE =				2, 
+			IS_EMPTY =			3, 
+			IS_FULL = 			4, 
+			PRINT_INDEXES = 5, 
+			PRINT_QUEUE = 	6};
 int main(void){
 	int64_t queue_size;
 	int64_t *queue = NULL;
@@ -21,26 +26,26 @@ int main(void){
 	do{
 		select = get_select();
 		switch (select){
-			case 1:
+			case ENQUEUE:
 				x = get_val();
 				enqueue(queue_size, &queue[0], x);	
 				break;
-			case 2:
+			case DEQUEUE:
 				dequeue(queue_size, &queue[0]);
 				break;
-			case 3:
+			case IS_EMPTY:
 				if ( is_queue_empty() ) printf("The queue is empty\n");
 				else printf("The queue is not empty\n");
 				break;
-			case 4:
+			case IS_FULL:
 				if ( is_queue_full(queue_size) ) printf("The queue is full\n");
 				else printf("The queue is not full\n");
 				break;
-			case 5:
+			case PRINT_INDEXES:
 				printf ("Head: %ld\n", q_head);
 				printf ("Tail: %ld\n", q_tail);
 				break;
-			case 6:
+			case PRINT_QUEUE:
 				if ( is_queue_empty() ) fprintf(stderr, "Cannot print an empty queue\n");
 				else {
 					int64_t i = q_head;
@@ -53,12 +58,12 @@ int main(void){
 				}
 				break;
 		}
-	}while (select == 6 ||
-					select == 5 ||
-					select == 4 ||
-					select == 3 ||
-					select == 2 ||
-					select == 1);
+	}while (select == PRINT_QUEUE 	||
+					select == PRINT_INDEXES ||
+					select == IS_FULL 			||
+					select == IS_EMPTY 			||
+					select == DEQUEUE 			||
+					select == ENQUEUE);
 	free(queue);
 return EXIT_SUCCESS;
 }
